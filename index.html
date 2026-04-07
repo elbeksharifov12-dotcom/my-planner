@@ -3,280 +3,458 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reading Control Center v4.0 - Admin Only</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <title>Ultimate Pro Planner v2.0 | Arxiv & Statistika</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;800&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap');
-
+        /* PREMIUM CSS ARCHITECTURE 
+           Ushbu qismda barcha dizayn elementlari joylashgan.
+        */
         :root {
-            --p: #6366f1; --s: #a855f7; --t: #ec4899;
-            --bg: #030712; --card: #111827; --text: #f9fafb;
+            --bg-dark: #0a0b10;
+            --card-bg: rgba(23, 25, 35, 0.8);
+            --primary: #00d2ff;
+            --secondary: #3a7bd5;
+            --accent: #ff007a;
+            --text-main: #e0e0e0;
+            --text-dim: #a0a0a0;
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --success: #00ff88;
         }
 
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', sans-serif;
+        }
+
         body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background: var(--bg); color: var(--text);
-            margin: 0; padding-bottom: 100px; line-height: 1.6;
-            background-image: radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.15) 0px, transparent 50%),
-                              radial-gradient(at 100% 100%, rgba(236, 72, 153, 0.1) 0px, transparent 50%);
+            background: radial-gradient(circle at top right, #1a1a2e, #0a0b10);
+            color: var(--text-main);
+            min-height: 100vh;
+            overflow-x: hidden;
+            padding-bottom: 50px;
         }
 
-        /* --- Layout --- */
-        .container { width: 100%; max-width: 600px; margin: 0 auto; padding: 20px; }
-        .header { text-align: center; margin-bottom: 30px; padding-top: 20px; }
-        h1 { font-weight: 800; font-size: 28px; margin: 0; letter-spacing: -1px; background: linear-gradient(to right, #6366f1, #ec4899); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-
-        /* --- Sections --- */
-        .section { display: none; animation: fadeIn 0.4s ease-out; }
-        .section.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        /* --- Glass Cards --- */
-        .card {
-            background: var(--card); border: 1px solid rgba(255,255,255,0.08);
-            border-radius: 24px; padding: 20px; margin-bottom: 20px;
-            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5);
+        /* Murakkab Orqa Fon Animatsiyasi */
+        .bg-blobs {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
+            filter: blur(80px);
+            opacity: 0.4;
+        }
+        .blob {
+            position: absolute;
+            border-radius: 50%;
+            background: var(--primary);
+            animation: move 20s infinite alternate;
+        }
+        @keyframes move {
+            from { transform: translate(0, 0); }
+            to { transform: translate(100vw, 100vh); }
         }
 
-        /* --- Admin Forms --- */
-        .form-label { display: block; font-size: 13px; font-weight: 600; color: #9ca3af; margin-bottom: 8px; margin-left: 5px; }
-        .input-pill {
-            width: 100%; background: #1f2937; border: 2px solid transparent;
-            padding: 14px 20px; border-radius: 16px; color: white; font-size: 16px;
-            transition: 0.3s; margin-bottom: 15px;
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 20px;
+            display: grid;
+            grid-template-columns: 280px 1fr 320px;
+            gap: 25px;
         }
-        .input-pill:focus { border-color: var(--p); outline: none; background: #111827; }
 
-        .btn {
-            display: flex; align-items: center; justify-content: center; gap: 10px;
-            width: 100%; padding: 14px; border-radius: 16px; border: none;
-            font-weight: 700; font-size: 15px; cursor: pointer; transition: 0.3s;
+        /* Glassmorphism Panellar */
+        .glass {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 30px;
+            padding: 25px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
         }
-        .btn-p { background: var(--p); color: white; box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3); }
-        .btn-p:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4); }
 
-        /* --- Quick List (Admin Panel) --- */
-        .admin-item {
-            display: flex; align-items: center; justify-content: space-between;
-            padding: 15px; background: rgba(255,255,255,0.03);
-            border-radius: 20px; margin-bottom: 10px; border: 1px solid rgba(255,255,255,0.05);
+        /* Sidebar Navigatsiya */
+        .sidebar h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            color: var(--primary);
+            margin-bottom: 30px;
+            letter-spacing: 2px;
         }
-        .user-meta h4 { margin: 0; font-size: 16px; }
-        .user-meta small { color: #6b7280; }
 
-        .action-btns { display: flex; gap: 8px; }
-        .act-btn {
-            width: 42px; height: 42px; border-radius: 12px; border: none;
-            cursor: pointer; display: flex; align-items: center; justify-content: center;
-            font-size: 18px; transition: 0.2s;
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: 0.3s;
+            color: var(--text-dim);
         }
-        .btn-plus { background: #10b981; color: white; }
-        .btn-minus { background: #ef4444; color: white; }
-        .act-btn:active { transform: scale(0.9); }
-
-        /* --- Leaderboard Tabs --- */
-        .tabs { display: flex; gap: 5px; background: #1f2937; padding: 5px; border-radius: 14px; margin-bottom: 20px; }
-        .tab-btn {
-            flex: 1; padding: 10px; border-radius: 10px; border: none;
-            background: transparent; color: #9ca3af; font-weight: 600; cursor: pointer;
+        .nav-item:hover, .nav-item.active {
+            background: rgba(0, 210, 255, 0.1);
+            color: var(--primary);
+            transform: translateX(10px);
         }
-        .tab-btn.active { background: var(--p); color: white; }
 
-        /* --- Rankings --- */
-        .rank-row {
-            display: flex; align-items: center; padding: 12px;
-            background: #111827; border-radius: 16px; margin-bottom: 8px;
+        /* Markaziy qism: Planner */
+        .main-content header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 30px;
         }
-        .rank-num { width: 35px; font-weight: 800; font-size: 18px; color: #4b5563; }
-        .rank-name { flex: 1; font-weight: 600; }
-        .rank-val { font-family: monospace; font-weight: 800; color: var(--p); background: rgba(99,102,241,0.1); padding: 4px 10px; border-radius: 8px; }
 
-        /* --- Bottom Nav --- */
-        .nav {
-            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
-            width: 90%; max-width: 400px; background: rgba(17, 24, 39, 0.85);
-            backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.08);
-            border-radius: 24px; padding: 12px; display: flex; justify-content: space-around; z-index: 1000;
+        .main-content h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(to right, #fff, var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
-        .nav-link { color: #6b7280; font-size: 20px; transition: 0.3s; cursor: pointer; }
-        .nav-link.active { color: var(--p); transform: translateY(-5px); }
 
-        /* --- Library --- */
-        .book-pill { background: #1f2937; padding: 15px; border-radius: 18px; display: flex; gap: 15px; align-items: center; }
-        .book-pill i { font-size: 24px; color: var(--t); }
+        .input-box {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        input {
+            flex: 1;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--glass-border);
+            padding: 18px 25px;
+            border-radius: 15px;
+            color: #fff;
+            font-size: 1rem;
+            outline: none;
+        }
+        .add-btn {
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            border: none;
+            padding: 0 30px;
+            border-radius: 15px;
+            color: #fff;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.4s;
+        }
+        .add-btn:hover {
+            box-shadow: 0 0 20px var(--primary);
+            transform: scale(1.05);
+        }
+
+        /* Vazifalar ro'yxati */
+        .task-card {
+            background: rgba(255,255,255,0.03);
+            margin-bottom: 15px;
+            padding: 20px;
+            border-radius: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-left: 4px solid var(--primary);
+            transition: 0.3s;
+        }
+        .task-card.done {
+            border-left-color: var(--success);
+            opacity: 0.7;
+        }
+        .task-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .check-circle {
+            width: 25px; height: 25px;
+            border: 2px solid var(--primary);
+            border-radius: 50%;
+            cursor: pointer;
+            display: grid;
+            place-items: center;
+        }
+        .done .check-circle {
+            background: var(--success);
+            border-color: var(--success);
+        }
+
+        /* Arxiv qismi uchun maxsus dizayn */
+        .archive-mode .task-card {
+            border-left-color: #555;
+            cursor: not-allowed;
+            pointer-events: none; /* Hech narsani o'zgartirib bo'lmaydi */
+        }
+        .archive-tag {
+            font-size: 0.7rem;
+            background: rgba(255,255,255,0.1);
+            padding: 4px 10px;
+            border-radius: 5px;
+            color: var(--text-dim);
+        }
+
+        /* Sidebar Stats */
+        .stat-box {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .stat-value {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            color: var(--primary);
+            display: block;
+        }
+        .stat-label {
+            color: var(--text-dim);
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+        }
+
+        /* Responsive */
+        @media (max-width: 1100px) {
+            .container { grid-template-columns: 1fr; }
+            .sidebar { display: none; }
+        }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <div class="header">
-        <h1>READING HUB PRO</h1>
-        <p style="font-size: 12px; color: #6b7280; text-transform: uppercase; letter-spacing: 2px;">Administrator Panel</p>
+    <div class="bg-blobs">
+        <div class="blob" style="width: 400px; height: 400px; left: -100px; top: -100px;"></div>
+        <div class="blob" style="width: 300px; height: 300px; right: -50px; bottom: -50px; background: var(--accent);"></div>
     </div>
 
-    <div id="admin" class="section active">
-        <div class="card">
-            <span class="form-label">Yangi o'quvchi qo'shish</span>
-            <div style="display: flex; gap: 10px;">
-                <input type="text" id="newName" class="input-pill" style="margin-bottom:0;" placeholder="F.I.SH">
-                <button onclick="addUser()" class="btn btn-p" style="width: 60px;"><i class="fas fa-user-plus"></i></button>
+    <div class="container">
+        <aside class="sidebar glass">
+            <h2>PRO DASHBOARD</h2>
+            <div class="nav-item active" onclick="switchTab('daily')">
+                <i class="fas fa-calendar-day"></i>
+                <span>Kunlik Rejalar</span>
             </div>
-        </div>
-
-        <div id="quickManageList">
+            <div class="nav-item" onclick="switchTab('archive')">
+                <i class="fas fa-archive"></i>
+                <span>Arxiv (O'zgarmas)</span>
             </div>
-        
-        <button onclick="downloadData()" class="btn" style="background: #374151; color: #d1d5db; margin-top: 20px;">
-            <i class="fas fa-download"></i> Hisobotni yuklash (.csv)
-        </button>
-    </div>
-
-    <div id="stats" class="section">
-        <div class="tabs">
-            <button class="tab-btn active" onclick="filterRank('daily', this)">Kunlik</button>
-            <button class="tab-btn" onclick="filterRank('weekly', this)">Haftalik</button>
-            <button class="tab-btn" onclick="filterRank('monthly', this)">Oylik</button>
-        </div>
-        <div id="rankingList">
+            <div class="nav-item">
+                <i class="fas fa-chart-line"></i>
+                <span>Statistika</span>
             </div>
-    </div>
-
-    <div id="lib" class="section">
-        <div class="card">
-            <div class="book-pill">
-                <i class="fas fa-fire"></i>
-                <div>
-                    <h3 style="margin:0">Samaradorlikning 21 yo'li</h3>
-                    <small style="color: #6b7280">Brian Tracy tomonidan</small>
+            <div class="nav-item">
+                <i class="fas fa-cog"></i>
+                <span>Sozlamalar</span>
+            </div>
+            
+            <div style="margin-top: 50px;">
+                <p class="stat-label">Haftalik Progress</p>
+                <div style="width: 100%; height: 8px; background: #222; border-radius: 10px; margin-top: 10px;">
+                    <div id="weeklyProgress" style="width: 65%; height: 100%; background: var(--primary); border-radius: 10px; box-shadow: 0 0 10px var(--primary);"></div>
                 </div>
             </div>
-            <p style="font-size: 14px; color: #9ca3af; margin-top: 15px;">
-                Muvaffaqiyatga erishish uchun vaqtni to'g'ri boshqarish sirlari. Ushbu kitob orqali hayotingizni tartibga soling.
-            </p>
-            <button class="btn btn-p" onclick="window.open('https://t.me/kitobxonlar_klubi', '_blank')">Kitobni yuklash</button>
-        </div>
+        </aside>
+
+        <main class="main-content">
+            <header>
+                <div>
+                    <p id="currentDay">Seshanba</p>
+                    <h1 id="titleText">Daily Planner</h1>
+                </div>
+                <div class="glass" style="padding: 10px 20px; border-radius: 15px;">
+                    <span id="digitalClock" style="font-family: 'Orbitron'; font-weight: bold;">09:41</span>
+                </div>
+            </header>
+
+            <div id="inputSection">
+                <div class="input-box">
+                    <input type="text" id="mainInput" placeholder="Nima rejangiz bor?">
+                    <button class="add-btn" onclick="addNewTask()">ADD TASK</button>
+                </div>
+            </div>
+
+            <div id="taskList">
+                </div>
+        </main>
+
+        <aside class="right-sidebar">
+            <div class="glass" style="margin-bottom: 25px;">
+                <div class="stat-box">
+                    <span class="stat-label">Bajarilgan</span>
+                    <span class="stat-value" id="doneCount">0</span>
+                </div>
+                <hr style="border: 0; border-top: 1px solid var(--glass-border); margin: 20px 0;">
+                <div class="stat-box">
+                    <span class="stat-label">Umumiy samaradorlik</span>
+                    <span class="stat-value" id="effPercent">0%</span>
+                </div>
+            </div>
+
+            <div class="glass">
+                <h3 style="font-size: 0.9rem; margin-bottom: 15px;">KUNLIK MOTIVATSIYA</h3>
+                <p id="quoteBox" style="font-size: 0.85rem; color: var(--text-dim); line-height: 1.6;">
+                    "Sizning bugungi mehnatingiz ertangi hayotingiz poydevoridir."
+                </p>
+            </div>
+        </aside>
     </div>
-</div>
 
-<nav class="nav">
-    <div class="nav-link active" onclick="nav('admin', this)"><i class="fas fa-tasks"></i></div>
-    <div class="nav-link" onclick="nav('stats', this)"><i class="fas fa-chart-line"></i></div>
-    <div class="nav-link" onclick="nav('lib', this)"><i class="fas fa-book-open"></i></div>
-</nav>
+    <script>
+        /* CORE JAVASCRIPT LOGIC 
+           Barcha funksiyalar va ma'lumotlar boshqaruvi.
+        */
 
-<script>
-    // MA'LUMOTLAR BAZASI
-    let db = JSON.parse(localStorage.getItem('adminReadingDB')) || [];
+        let state = {
+            view: 'daily', // daily yoki archive
+            dailyTasks: JSON.parse(localStorage.getItem('dailyTasks')) || [],
+            archivedTasks: JSON.parse(localStorage.getItem('archivedTasks')) || []
+        };
 
-    // NAVIGATSIYA
-    function nav(id, el) {
-        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-        document.querySelectorAll('.nav-link').forEach(n => n.classList.remove('active'));
-        document.getElementById(id).classList.add('active');
-        el.classList.add('active');
-        if(id === 'admin') renderAdmin();
-        if(id === 'stats') filterRank('daily');
-    }
+        // SAQLASH
+        function syncStorage() {
+            localStorage.setItem('dailyTasks', JSON.stringify(state.dailyTasks));
+            localStorage.setItem('archivedTasks', JSON.stringify(state.archivedTasks));
+            updateStats();
+        }
 
-    // YANGI ODAM QO'SHISH
-    function addUser() {
-        const name = document.getElementById('newName').value.trim();
-        if(!name) return alert("Ism kiriting!");
-        
-        db.push({
-            id: Date.now(),
-            name: name,
-            logs: [], // Har bir ball qo'yilgan vaqti saqlanadi
-            total: 0
-        });
-        save();
-        document.getElementById('newName').value = '';
-        renderAdmin();
-    }
+        // YANGI VAZIFA
+        function addNewTask() {
+            const input = document.getElementById('mainInput');
+            if (input.value.trim() === "") return;
 
-    // BALL BOSHQARISH (+ va -)
-    function changeScore(userId, type) {
-        const user = db.find(u => u.id === userId);
-        const now = new Date();
+            const task = {
+                id: Date.now(),
+                text: input.value,
+                completed: false,
+                time: new Date().toLocaleTimeString().slice(0, 5),
+                date: new Date().toLocaleDateString()
+            };
 
-        if(type === 'plus') {
-            user.logs.push(now.toISOString());
-            user.total++;
-            confetti({ particleCount: 50, spread: 40, colors: ['#6366f1', '#ec4899'] });
-        } else {
-            if(user.logs.length > 0) {
-                user.logs.pop();
-                user.total--;
+            state.dailyTasks.unshift(task);
+            input.value = "";
+            render();
+            syncStorage();
+        }
+
+        // BAJARILDI DEB BELGILASH VA ARXIVGA YUBORISH
+        function toggleTask(id) {
+            state.dailyTasks = state.dailyTasks.map(t => {
+                if (t.id === id) {
+                    t.completed = !t.completed;
+                    // Agar bajarilgan bo'lsa, 1 soniyadan keyin arxivga o'tkazish
+                    if(t.completed) {
+                        setTimeout(() => moveToArchive(id), 1000);
+                    }
+                }
+                return t;
+            });
+            render();
+            syncStorage();
+        }
+
+        function moveToArchive(id) {
+            const taskIndex = state.dailyTasks.findIndex(t => t.id === id);
+            if(taskIndex > -1) {
+                const task = state.dailyTasks.splice(taskIndex, 1)[0];
+                task.archivedAt = new Date().toLocaleDateString();
+                state.archivedTasks.unshift(task);
+                render();
+                syncStorage();
             }
         }
-        save();
-        renderAdmin();
-    }
 
-    // ADMIN RO'YXATINI CHIQARISH
-    function renderAdmin() {
-        const list = document.getElementById('quickManageList');
-        list.innerHTML = '';
-        db.forEach(u => {
-            list.innerHTML += `
-                <div class="admin-item">
-                    <div class="user-meta">
-                        <h4>${u.name}</h4>
-                        <small>Jami: ${u.total} kun</small>
-                    </div>
-                    <div class="action-btns">
-                        <button class="act-btn btn-minus" onclick="changeScore(${u.id}, 'minus')"><i class="fas fa-minus"></i></button>
-                        <button class="act-btn btn-plus" onclick="changeScore(${u.id}, 'plus')"><i class="fas fa-plus"></i></button>
-                    </div>
-                </div>
-            `;
-        });
-    }
+        // TABLARNI ALMASHTIRISH
+        function switchTab(tab) {
+            state.view = tab;
+            
+            // UI Update
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+            
+            const inputSection = document.getElementById('inputSection');
+            const title = document.getElementById('titleText');
 
-    // REYTING FILTRI (KUNLIK, HAFTALIK, OYLIK)
-    function filterRank(period, el) {
-        if(el) {
-            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-            el.classList.add('active');
+            if(tab === 'archive') {
+                inputSection.style.display = 'none';
+                title.innerText = "Archive (View Only)";
+                document.getElementById('taskList').classList.add('archive-mode');
+            } else {
+                inputSection.style.display = 'flex';
+                title.innerText = "Daily Planner";
+                document.getElementById('taskList').classList.remove('archive-mode');
+            }
+            render();
         }
 
-        const now = new Date();
-        const filtered = db.map(u => {
-            let pScore = u.logs.filter(log => {
-                const logDate = new Date(log);
-                if(period === 'daily') return logDate.toDateString() === now.toDateString();
-                if(period === 'weekly') return (now - logDate) < 7 * 24 * 60 * 60 * 1000;
-                if(period === 'monthly') return logDate.getMonth() === now.getMonth() && logDate.getFullYear() === now.getFullYear();
-            }).length;
-            return { name: u.name, score: pScore };
-        }).sort((a,b) => b.score - a.score);
+        // RENDER QILISH
+        function render() {
+            const list = document.getElementById('taskList');
+            list.innerHTML = "";
+            
+            const tasksToDisplay = state.view === 'daily' ? state.dailyTasks : state.archivedTasks;
 
-        const rList = document.getElementById('rankingList');
-        rList.innerHTML = filtered.map((u, i) => `
-            <div class="rank-row">
-                <div class="rank-num">#${i+1}</div>
-                <div class="rank-name">${u.name}</div>
-                <div class="rank-val">${u.score}</div>
-            </div>
-        `).join('');
-    }
+            if(tasksToDisplay.length === 0) {
+                list.innerHTML = `<p style="text-align: center; color: var(--text-dim); margin-top: 50px;">Hech narsa topilmadi...</p>`;
+                return;
+            }
 
-    // DATA SAQLASH
-    function save() { localStorage.setItem('adminReadingDB', JSON.stringify(db)); }
+            tasksToDisplay.forEach(task => {
+                const card = document.createElement('div');
+                card.className = `task-card ${task.completed ? 'done' : ''}`;
+                card.innerHTML = `
+                    <div class="task-info">
+                        <div class="check-circle" onclick="toggleTask(${task.id})">
+                            ${task.completed ? '<i class="fas fa-check"></i>' : ''}
+                        </div>
+                        <div>
+                            <p style="font-weight: 600;">${task.text}</p>
+                            <span style="font-size: 0.7rem; color: var(--text-dim);">
+                                <i class="far fa-clock"></i> ${task.time} 
+                                ${state.view === 'archive' ? `<span class="archive-tag">Arxivlandi: ${task.archivedAt}</span>` : ''}
+                            </span>
+                        </div>
+                    </div>
+                    ${state.view === 'daily' ? `
+                        <i class="fas fa-trash" style="color: #ff4757; cursor: pointer;" onclick="deleteTask(${task.id})"></i>
+                    ` : '<i class="fas fa-lock" title="Arxivlangan, o\'zgartirib bo\'lmaydi"></i>'}
+                `;
+                list.appendChild(card);
+            });
+        }
 
-    // CSV YUKLAB OLISH
-    function downloadData() {
-        let csv = "Ism,Jami O'qilgan Kunlar\n";
-        db.forEach(u => { csv += `${u.name},${u.total}\n` });
-        const blob = new Blob([csv], { type: 'text/csv' });
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url; a.download = 'hisobot.csv'; a.click();
-    }
+        function deleteTask(id) {
+            state.dailyTasks = state.dailyTasks.filter(t => t.id !== id);
+            render();
+            syncStorage();
+        }
 
-    renderAdmin();
-</script>
+        function updateStats() {
+            const done = state.archivedTasks.length;
+            const daily = state.dailyTasks.length;
+            const total = done + daily;
+            
+            document.getElementById('doneCount').innerText = done;
+            const percent = total === 0 ? 0 : Math.round((done / total) * 100);
+            document.getElementById('effPercent').innerText = percent + "%";
+            document.getElementById('weeklyProgress').style.width = percent + "%";
+        }
+
+        // VAQT VA SOAT
+        setInterval(() => {
+            const now = new Date();
+            document.getElementById('digitalClock').innerText = now.toLocaleTimeString().slice(0, 5);
+        }, 1000);
+
+        // INITIALIZE
+        window.onload = () => {
+            const days = ["Yakshanba", "Dushanba", "Seshanba", "Chorshanba", "Payshanba", "Juma", "Shanba"];
+            document.getElementById('currentDay').innerText = days[new Date().getDay()];
+            render();
+            updateStats();
+        };
+    </script>
 </body>
-  </html>
+    </html>
