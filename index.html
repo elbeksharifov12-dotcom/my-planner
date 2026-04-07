@@ -1,302 +1,489 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="uz">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NEO-GENESIS | QUANTUM SUPER-INTERFACE</title>
+    <title>ProTasker - Mukammal Rejalashtirish Tizimi</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Share+Tech+Mono&family=Orbitron:wght@400;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script> <style>
-        /* ================================================================
-           NEO-GENESIS DESIGN SYSTEM (VIRTUAL 20,000+ LINES)
-           ================================================================
-        */
+    <style>
         :root {
-            --neon-blue: #00f2ff;
-            --neon-purple: #bc13fe;
-            --neon-green: #39ff14;
-            --deep-space: #020205;
-            --text-glow: 0 0 10px rgba(0, 242, 255, 0.7);
+            --primary-color: #6c5ce7;
+            --secondary-color: #a29bfe;
+            --accent-color: #00cec9;
+            --bg-gradient: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            --glass-bg: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --text-color: #ffffff;
         }
 
-        body, html {
-            margin: 0; padding: 0; width: 100%; height: 100%;
-            background: var(--deep-space);
-            color: #fff;
-            font-family: 'Share Tech Mono', monospace;
-            overflow: hidden;
-            cursor: url('https://cur.cursors-4u.net/tech/tec-8/tec715.cur'), auto;
-        }
-
-        /* 3D Background Canvas */
-        #canvas-container {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1;
-        }
-
-        /* Glassmorphism OS Shell */
-        .os-wrapper {
-            display: grid;
-            grid-template-areas: 
-                "header header header"
-                "nav main stats"
-                "footer footer footer";
-            grid-template-columns: 100px 1fr 350px;
-            grid-template-rows: 80px 1fr 40px;
-            height: 100vh;
-            gap: 15px;
-            padding: 15px;
+        * {
+            margin: 0;
+            padding: 0;
             box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
         }
 
+        body {
+            background: var(--bg-gradient);
+            background-attachment: fixed;
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1100px;
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 30px;
+        }
+
+        /* Glassmorphism Effect */
         .glass-panel {
-            background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(25px) saturate(180%);
-            border: 1px solid rgba(0, 242, 255, 0.2);
-            border-radius: 4px;
-            box-shadow: inset 0 0 20px rgba(0, 242, 255, 0.1);
-            position: relative;
-            overflow: hidden;
-        }
-
-        /* Header Style */
-        header { grid-area: header; display: flex; align-items: center; justify-content: space-between; padding: 0 30px; }
-        .logo { font-family: 'Syncopate', sans-serif; font-size: 1.5rem; letter-spacing: 10px; color: var(--neon-blue); text-shadow: var(--text-glow); }
-
-        /* Navigation Rail */
-        nav { grid-area: nav; display: flex; flex-direction: column; align-items: center; gap: 40px; padding-top: 50px; }
-        .nav-item { font-size: 1.8rem; color: rgba(255,255,255,0.3); transition: 0.4s; cursor: pointer; }
-        .nav-item:hover, .nav-item.active { color: var(--neon-blue); transform: scale(1.3); text-shadow: var(--text-glow); }
-
-        /* Main Workspace */
-        main { grid-area: main; padding: 40px; overflow-y: auto; scrollbar-width: none; }
-        .input-group { position: sticky; top: 0; z-index: 100; display: flex; gap: 10px; margin-bottom: 50px; background: rgba(0,0,0,0.8); padding: 20px; border: 1px dashed var(--neon-blue); }
-        input { flex: 1; background: transparent; border: none; color: var(--neon-blue); font-size: 1.5rem; outline: none; border-bottom: 2px solid #222; }
-        .exec-btn { background: var(--neon-blue); color: #000; border: none; padding: 10px 40px; font-weight: 900; cursor: pointer; font-family: 'Orbitron'; }
-
-        /* Task Galaxy Items */
-        .task-node {
-            background: rgba(255,255,255,0.05);
-            margin-bottom: 20px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
             padding: 30px;
-            border-left: 5px solid var(--neon-purple);
-            animation: nodeSpawn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            display: flex; justify-content: space-between; align-items: center;
-        }
-        @keyframes nodeSpawn { from { opacity: 0; transform: translateX(-100px) skewX(20deg); } to { opacity: 1; transform: translateX(0) skewX(0); } }
-
-        /* Archive View - Black Hole Mode */
-        .archive-mode .task-node {
-            filter: grayscale(1) brightness(0.5);
-            border-left-color: #444;
-            pointer-events: none;
-            opacity: 0.5;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
         }
 
-        /* Stats & Analytics */
-        .stats-panel { grid-area: stats; padding: 25px; display: flex; flex-direction: column; gap: 20px; }
-        .stat-box { border: 1px solid rgba(255,255,255,0.1); padding: 20px; text-align: center; }
-        .stat-val { font-size: 3rem; font-family: 'Orbitron'; display: block; color: var(--neon-green); }
+        /* Header Styles */
+        .header {
+            grid-column: 1 / -1;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
 
-        /* Matrix Rain Canvas */
-        #matrix-canvas { position: absolute; top: 0; left: 0; opacity: 0.15; pointer-events: none; }
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(to right, #fff, var(--accent-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .date-display {
+            font-size: 1.1rem;
+            opacity: 0.8;
+        }
+
+        /* Main Content - Task Section */
+        .task-section h2 {
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        input[type="text"] {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            padding: 15px 20px;
+            border-radius: 12px;
+            color: white;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        input[type="text"]:focus {
+            border-color: var(--accent-color);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-add {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0 25px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-add:hover {
+            background: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+
+        /* Task List Styles */
+        .task-list {
+            list-style: none;
+        }
+
+        .task-item {
+            background: rgba(255, 255, 255, 0.05);
+            margin-bottom: 15px;
+            padding: 15px 20px;
+            border-radius: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: 0.3s;
+            border-left: 5px solid var(--primary-color);
+            animation: slideIn 0.4s ease-out;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .task-item.completed {
+            border-left-color: var(--accent-color);
+            opacity: 0.6;
+        }
+
+        .task-item.completed .task-text {
+            text-decoration: line-through;
+        }
+
+        .task-content {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .checkbox-custom {
+            width: 22px;
+            height: 22px;
+            border: 2px solid var(--accent-color);
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.3s;
+        }
+
+        .task-item.completed .checkbox-custom {
+            background: var(--accent-color);
+        }
+
+        .task-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-action {
+            background: none;
+            border: none;
+            color: #ff7675;
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: 0.2s;
+        }
+
+        .btn-action:hover {
+            transform: scale(1.2);
+        }
+
+        /* Sidebar - Stats Section */
+        .stats-section {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .stat-card {
+            text-align: center;
+        }
+
+        .circle-progress {
+            position: relative;
+            width: 150px;
+            height: 150px;
+            margin: 20px auto;
+        }
+
+        .circle-progress svg {
+            width: 150px;
+            height: 150px;
+            transform: rotate(-90deg);
+        }
+
+        .circle-progress circle {
+            fill: none;
+            stroke-width: 10;
+            stroke-linecap: round;
+        }
+
+        .circle-bg {
+            stroke: rgba(255, 255, 255, 0.1);
+        }
+
+        .circle-value {
+            stroke: var(--accent-color);
+            stroke-dasharray: 440;
+            stroke-dashoffset: 440;
+            transition: stroke-dashoffset 1s ease-in-out;
+        }
+
+        .percentage {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .stat-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .mini-stat {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .mini-stat h4 {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+            color: var(--secondary-color);
+        }
+
+        .mini-stat span {
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        /* Motivational Quote */
+        .quote-box {
+            margin-top: auto;
+            font-style: italic;
+            font-size: 0.9rem;
+            text-align: center;
+            opacity: 0.7;
+            padding-top: 20px;
+            border-top: 1px solid var(--glass-border);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 900px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+            .stats-section {
+                order: -1;
+            }
+        }
     </style>
 </head>
 <body>
 
-<div id="canvas-container"></div>
-<canvas id="matrix-canvas"></canvas>
-
-<div class="os-wrapper">
-    <header class="glass-panel">
-        <div class="logo">NEO-GENESIS.SYS</div>
-        <div id="clock" style="font-size: 1.2rem; font-family: 'Orbitron'; color: var(--neon-purple);">00:00:00</div>
+<div class="container">
+    <header class="header glass-panel">
+        <div>
+            <h1 id="greeting">Xayrli tong!</h1>
+            <p class="date-display" id="currentDate">7-Aprel, 2026</p>
+        </div>
+        <div class="user-profile">
+            <i class="fas fa-user-circle fa-3x"></i>
+        </div>
     </header>
 
-    <nav class="glass-panel">
-        <div class="nav-item active" onclick="Engine.tab('stream')"><i class="fas fa-satellite"></i></div>
-        <div class="nav-item" onclick="Engine.tab('archive')"><i class="fas fa-ghost"></i></div>
-        <div class="nav-item" onclick="Engine.tab('analytics')"><i class="fas fa-microchip"></i></div>
-        <div class="nav-item" onclick="Engine.tab('config')"><i class="fas fa-user-secret"></i></div>
-    </nav>
-
-    <main class="glass-panel" id="main-view">
+    <main class="task-section glass-panel">
+        <h2><i class="fas fa-tasks"></i> Kunlik Rejalar</h2>
+        
         <div class="input-group">
-            <input type="text" id="command-line" placeholder="[CMD] NEW_REALITY_PLAN_ENTRY...">
-            <button class="exec-btn" onclick="Engine.inject()">INJECT</button>
+            <input type="text" id="taskInput" placeholder="Yangi vazifa qo'shing (masalan: Kitob o'qish)...">
+            <button class="btn-add" onclick="addTask()">
+                <i class="fas fa-plus"></i> Qo'shish
+            </button>
         </div>
-        <div id="node-stream"></div>
+
+        <ul class="task-list" id="taskList">
+            </ul>
     </main>
 
-    <aside class="stats-panel glass-panel">
-        <h3 style="font-family: 'Syncopate'; font-size: 0.8rem;">ANALYTICS_CORE</h3>
-        <div class="stat-box">
-            <span class="stat-val" id="eff-score">00</span>
-            <small>EFFICIENCY_INDEX</small>
+    <aside class="stats-section">
+        <div class="glass-panel stat-card">
+            <h3>Kunlik Progress</h3>
+            <div class="circle-progress">
+                <svg>
+                    <circle class="circle-bg" cx="75" cy="75" r="70"></circle>
+                    <circle class="circle-value" id="progressCircle" cx="75" cy="75" r="70"></circle>
+                </svg>
+                <div class="percentage" id="progressText">0%</div>
+            </div>
+            <p id="statusMsg">Hali hech narsa bajarilmadi</p>
         </div>
-        <div class="stat-box">
-            <span class="stat-val" id="archive-count" style="color: var(--neon-purple);">0</span>
-            <small>ABSOLUTE_RECORDS</small>
+
+        <div class="glass-panel">
+            <h3>Umumiy Statistika</h3>
+            <div class="stat-details">
+                <div class="mini-stat">
+                    <h4>Haftalik</h4>
+                    <span id="weeklyStat">84%</span>
+                </div>
+                <div class="mini-stat">
+                    <h4>Oylik</h4>
+                    <span id="monthlyStat">72%</span>
+                </div>
+            </div>
         </div>
-        <div class="hud-line" style="margin-top: auto; font-size: 0.7rem; color: #555;">
-            >> LOG: SYNC_COMPLETE<br>
-            >> KERNEL: V.99.2.0<br>
-            >> USER: MASTER_DEVELOPER
+
+        <div class="glass-panel quote-box">
+            <p id="quote">"Muvaffaqiyat — bu har kuni takrorlanadigan kichik g'alabalar yig'indisidir."</p>
         </div>
     </aside>
-
-    <footer class="glass-panel" style="display: flex; align-items: center; padding: 0 20px; font-size: 0.7rem; opacity: 0.5; letter-spacing: 2px;">
-        STATUS: OPERATIONAL // MEMORY: OPTIMAL // QUANTUM_LINK: ACTIVE
-    </footer>
 </div>
 
 <script>
-    /* ================================================================
-       ENGINE.JS - NEURAL CORE LOGIC (VIRTUAL 15,000+ LOGIC PATHS)
-       ================================================================
-    */
-    const Engine = {
-        state: {
-            tasks: JSON.parse(localStorage.getItem('GENESIS_DATA')) || [],
-            archive: JSON.parse(localStorage.getItem('GENESIS_ARCHIVE')) || [],
-            view: 'stream'
-        },
+    // Ma'lumotlarni saqlash uchun massiv
+    let tasks = JSON.parse(localStorage.getItem('myTasks')) || [];
 
-        init() {
-            this.init3D();
-            this.initMatrix();
-            this.render();
-            this.startClock();
-            console.log("%c NEO-GENESIS KERNEL LOADED ", "background: #00f2ff; color: #000; font-weight: bold;");
-        },
+    // Vaqt va Salomlashish
+    function updateHeader() {
+        const now = new Date();
+        const hour = now.getHours();
+        const greeting = document.getElementById('greeting');
+        const dateDisplay = document.getElementById('currentDate');
 
-        init3D() {
-            const scene = new THREE.Scene();
-            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-            const renderer = new THREE.WebGLRenderer({ alpha: true });
-            renderer.setSize(window.innerWidth, window.innerHeight);
-            document.getElementById('canvas-container').appendChild(renderer.domElement);
+        if(hour < 12) greeting.innerText = "Xayrli tong!";
+        else if(hour < 18) greeting.innerText = "Xayrli kun!";
+        else greeting.innerText = "Xayrli kecha!";
 
-            const geometry = new THREE.BufferGeometry();
-            const vertices = [];
-            for (let i = 0; i < 5000; i++) {
-                vertices.push(THREE.MathUtils.randFloatSpread(2000), THREE.MathUtils.randFloatSpread(2000), THREE.MathUtils.randFloatSpread(2000));
-            }
-            geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
-            const particles = new THREE.Points(geometry, new THREE.PointsMaterial({ color: 0x00f2ff, size: 2 }));
-            scene.add(particles);
-            camera.position.z = 500;
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        dateDisplay.innerText = now.toLocaleDateString('uz-UZ', options);
+    }
 
-            function animate() {
-                requestAnimationFrame(animate);
-                particles.rotation.y += 0.001;
-                particles.rotation.x += 0.0005;
-                renderer.render(scene, camera);
-            }
-            animate();
-        },
+    // Vazifa qo'shish
+    function addTask() {
+        const input = document.getElementById('taskInput');
+        const text = input.value.trim();
 
-        initMatrix() {
-            const c = document.getElementById("matrix-canvas");
-            const ctx = c.getContext("2d");
-            c.height = window.innerHeight; c.width = window.innerWidth;
-            const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*";
-            const fontSize = 10;
-            const columns = c.width / fontSize;
-            const drops = Array(Math.floor(columns)).fill(1);
-
-            function draw() {
-                ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
-                ctx.fillRect(0, 0, c.width, c.height);
-                ctx.fillStyle = "#00f2ff";
-                ctx.font = fontSize + "px arial";
-                for (let i = 0; i < drops.length; i++) {
-                    const text = letters.charAt(Math.floor(Math.random() * letters.length));
-                    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-                    if (drops[i] * fontSize > c.height && Math.random() > 0.975) drops[i] = 0;
-                    drops[i]++;
-                }
-            }
-            setInterval(draw, 33);
-        },
-
-        inject() {
-            const input = document.getElementById('command-line');
-            if (!input.value.trim()) return;
-
-            const node = {
-                id: 'NODE-' + Date.now().toString(36).toUpperCase(),
-                content: input.value,
-                energy: Math.floor(Math.random() * 100),
-                created: new Date().toLocaleTimeString()
+        if (text) {
+            const newTask = {
+                id: Date.now(),
+                text: text,
+                completed: false,
+                date: new Date().toLocaleDateString()
             };
-
-            this.state.tasks.unshift(node);
+            tasks.push(newTask);
+            saveAndRender();
             input.value = '';
-            this.sync();
-            this.render();
-        },
-
-        resolve(id) {
-            const idx = this.state.tasks.findIndex(t => t.id === id);
-            if (idx > -1) {
-                const node = this.state.tasks.splice(idx, 1)[0];
-                node.archivedAt = new Date().toLocaleString();
-                this.state.archive.unshift(node);
-                this.sync();
-                this.render();
-            }
-        },
-
-        tab(t) {
-            this.state.view = t;
-            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-            event.currentTarget.classList.add('active');
-            
-            if(t === 'archive') document.getElementById('main-view').classList.add('archive-mode');
-            else document.getElementById('main-view').classList.remove('archive-mode');
-            
-            this.render();
-        },
-
-        render() {
-            const container = document.getElementById('node-stream');
-            container.innerHTML = '';
-            const list = this.state.view === 'stream' ? this.state.tasks : this.state.archive;
-
-            list.forEach(node => {
-                const div = document.createElement('div');
-                div.className = 'task-node';
-                div.innerHTML = `
-                    <div>
-                        <small style="color:var(--neon-blue)">${node.id}</small>
-                        <h2 style="margin:5px 0; font-family:'Orbitron'">${node.content}</h2>
-                        <span style="font-size:0.7rem; opacity:0.5">ENERGY_REQUIRED: ${node.energy}% | TIMESTAMP: ${node.created}</span>
-                    </div>
-                    ${this.state.view === 'stream' ? `<button class="exec-btn" onclick="Engine.resolve('${node.id}')">RESOLVE</button>` : `<i class="fas fa-lock" style="color:var(--neon-purple)"></i>`}
-                `;
-                container.appendChild(div);
-            });
-
-            document.getElementById('archive-count').innerText = this.state.archive.length;
-            const eff = this.state.archive.length > 0 ? Math.min(100, (this.state.archive.length * 10)) : 0;
-            document.getElementById('eff-score').innerText = eff.toString().padStart(2, '0');
-        },
-
-        sync() {
-            localStorage.setItem('GENESIS_DATA', JSON.stringify(this.state.tasks));
-            localStorage.setItem('GENESIS_ARCHIVE', JSON.stringify(this.state.archive));
-        },
-
-        startClock() {
-            setInterval(() => {
-                document.getElementById('clock').innerText = new Date().toLocaleTimeString('uz-UZ', {hour12:false});
-            }, 1000);
         }
-    };
+    }
 
-    window.onload = () => Engine.init();
+    // O'chirish
+    function deleteTask(id) {
+        tasks = tasks.filter(t => t.id !== id);
+        saveAndRender();
+    }
+
+    // Bajarilganlikni belgilash
+    function toggleTask(id) {
+        tasks = tasks.map(t => {
+            if (t.id === id) return { ...t, completed: !t.completed };
+            return t;
+        });
+        saveAndRender();
+    }
+
+    // Ma'lumotlarni saqlash va ko'rsatish
+    function saveAndRender() {
+        localStorage.setItem('myTasks', JSON.stringify(tasks));
+        renderTasks();
+        updateStats();
+    }
+
+    function renderTasks() {
+        const list = document.getElementById('taskList');
+        list.innerHTML = '';
+
+        tasks.forEach(task => {
+            const li = document.createElement('li');
+            li.className = `task-item ${task.completed ? 'completed' : ''}`;
+            li.innerHTML = `
+                <div class="task-content">
+                    <div class="checkbox-custom" onclick="toggleTask(${task.id})">
+                        ${task.completed ? '<i class="fas fa-check"></i>' : ''}
+                    </div>
+                    <span class="task-text">${task.text}</span>
+                </div>
+                <div class="task-actions">
+                    <button class="btn-action" onclick="deleteTask(${task.id})">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            `;
+            list.appendChild(li);
+        });
+    }
+
+    // Statistika hisoblash
+    function updateStats() {
+        const total = tasks.length;
+        const completed = tasks.filter(t => t.completed).length;
+        const percent = total === 0 ? 0 : Math.round((completed / total) * 100);
+
+        // Progress Circle Update
+        const circle = document.getElementById('progressCircle');
+        const text = document.getElementById('progressText');
+        const offset = 440 - (440 * percent) / 100;
+        circle.style.strokeDashoffset = offset;
+        text.innerText = percent + "%";
+
+        // Status xabari
+        const msg = document.getElementById('statusMsg');
+        if (percent === 100 && total > 0) msg.innerText = "Bugungi barcha vazifalar bajarildi! 🔥";
+        else if (percent > 50) msg.innerText = "Yaxshi ketyapsiz, davom eting! 💪";
+        else if (total > 0) msg.innerText = "Hali vazifalar kutib turibdi...";
+        else msg.innerText = "Bugun rejalar yo'q...";
+
+        // Sun'iy Haftalik va Oylik (Dinamik qilish mumkin)
+        document.getElementById('weeklyStat').innerText = (percent > 0 ? Math.min(percent + 15, 95) : 45) + "%";
+        document.getElementById('monthlyStat').innerText = (percent > 0 ? Math.min(percent + 5, 88) : 60) + "%";
+    }
+
+    // Inputda Enter tugmasini bosganda qo'shish
+    document.getElementById('taskInput').addEventListener('keypress', function (e) {
+        if (e.key === 'Enter') addTask();
+    });
+
+    // Sayt yuklanganda
+    window.onload = () => {
+        updateHeader();
+        saveAndRender();
+        
+        // Tasodifiy motivatsiya
+        const quotes = [
+            "\"Muvaffaqiyat — bu har kuni takrorlanadigan kichik g'alabalar yig'indisidir.\"",
+            "\"Bugungi harakat — ertangi natija.\"",
+            "\"Vaqtingizni boshqaring, aks holda u sizni boshqaradi.\"",
+            "\"Kichik qadamlar katta maqsadlarga olib boradi.\""
+        ];
+        document.getElementById('quote').innerText = quotes[Math.floor(Math.random() * quotes.length)];
+    };
 </script>
+
 </body>
     </html>
