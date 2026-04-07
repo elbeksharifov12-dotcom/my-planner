@@ -3,458 +3,512 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ultimate Pro Planner v2.0 | Arxiv & Statistika</title>
+    <title>AstraOS | Neural Productivity Engine v4.0.5-Gold</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;800&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <style>
-        /* PREMIUM CSS ARCHITECTURE 
-           Ushbu qismda barcha dizayn elementlari joylashgan.
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <style>
+        /* ================================================================
+           ASTRA OS - THE ULTIMATE DESIGN SYSTEM (CSS ARCHITECTURE)
+           ================================================================
         */
         :root {
-            --bg-dark: #0a0b10;
-            --card-bg: rgba(23, 25, 35, 0.8);
-            --primary: #00d2ff;
-            --secondary: #3a7bd5;
-            --accent: #ff007a;
-            --text-main: #e0e0e0;
-            --text-dim: #a0a0a0;
-            --glass-border: rgba(255, 255, 255, 0.1);
-            --success: #00ff88;
+            --primary-neon: #00f2ff;
+            --secondary-neon: #7000ff;
+            --accent-gold: #ffcc00;
+            --bg-deep: #050508;
+            --surface: rgba(20, 20, 35, 0.7);
+            --border-glow: rgba(0, 242, 255, 0.3);
+            --text-cyber: #e0e6ed;
+            --danger: #ff4d4d;
+            --success: #00ff95;
+            --transition-smooth: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Montserrat', sans-serif;
+            font-family: 'Space Grotesk', sans-serif;
+            scrollbar-width: thin;
+            scrollbar-color: var(--primary-neon) transparent;
         }
 
         body {
-            background: radial-gradient(circle at top right, #1a1a2e, #0a0b10);
-            color: var(--text-main);
-            min-height: 100vh;
-            overflow-x: hidden;
-            padding-bottom: 50px;
+            background-color: var(--bg-deep);
+            color: var(--text-cyber);
+            overflow: hidden; /* Desktop app feel */
+            height: 100vh;
+            background-image: 
+                radial-gradient(circle at 50% 50%, rgba(112, 0, 255, 0.1) 0%, transparent 50%),
+                linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%),
+                linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            background-size: 100% 100%, 100% 4px, 100% 100%;
         }
 
-        /* Murakkab Orqa Fon Animatsiyasi */
-        .bg-blobs {
+        /* Loading Screen */
+        #loader {
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1;
-            filter: blur(80px);
-            opacity: 0.4;
-        }
-        .blob {
-            position: absolute;
-            border-radius: 50%;
-            background: var(--primary);
-            animation: move 20s infinite alternate;
-        }
-        @keyframes move {
-            from { transform: translate(0, 0); }
-            to { transform: translate(100vw, 100vh); }
-        }
-
-        .container {
-            max-width: 1300px;
-            margin: 0 auto;
-            padding: 20px;
-            display: grid;
-            grid-template-columns: 280px 1fr 320px;
-            gap: 25px;
-        }
-
-        /* Glassmorphism Panellar */
-        .glass {
-            background: var(--card-bg);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid var(--glass-border);
-            border-radius: 30px;
-            padding: 25px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
-        }
-
-        /* Sidebar Navigatsiya */
-        .sidebar h2 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.2rem;
-            color: var(--primary);
-            margin-bottom: 30px;
-            letter-spacing: 2px;
-        }
-
-        .nav-item {
+            inset: 0;
+            background: #000;
+            z-index: 10000;
             display: flex;
+            flex-direction: column;
+            justify-content: center;
             align-items: center;
-            gap: 15px;
-            padding: 15px;
-            margin-bottom: 10px;
-            border-radius: 15px;
+            transition: opacity 1s;
+        }
+
+        .loader-text {
+            font-family: 'Syncopate', sans-serif;
+            font-size: 2rem;
+            color: var(--primary-neon);
+            letter-spacing: 10px;
+            text-shadow: 0 0 20px var(--primary-neon);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.2; transform: scale(0.9); }
+            50% { opacity: 1; transform: scale(1); }
+            100% { opacity: 0.2; transform: scale(0.9); }
+        }
+
+        /* Layout Structure */
+        .app-shell {
+            display: grid;
+            grid-template-columns: 80px 300px 1fr;
+            height: 100vh;
+            gap: 1px;
+            background: var(--border-glow);
+        }
+
+        /* Sidebar 1: Mini Nav */
+        .nav-rail {
+            background: rgba(5, 5, 10, 0.95);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 0;
+            gap: 30px;
+        }
+
+        .nav-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             cursor: pointer;
-            transition: 0.3s;
             color: var(--text-dim);
-        }
-        .nav-item:hover, .nav-item.active {
-            background: rgba(0, 210, 255, 0.1);
-            color: var(--primary);
-            transform: translateX(10px);
+            transition: var(--transition-smooth);
+            font-size: 1.5rem;
         }
 
-        /* Markaziy qism: Planner */
-        .main-content header {
+        .nav-icon:hover, .nav-icon.active {
+            background: var(--primary-neon);
+            color: #000;
+            box-shadow: 0 0 20px var(--primary-neon);
+            transform: scale(1.1);
+        }
+
+        /* Sidebar 2: Control Panel */
+        .control-panel {
+            background: var(--surface);
+            backdrop-filter: blur(40px);
+            padding: 30px;
             display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-            margin-bottom: 30px;
+            flex-direction: column;
+            border-right: 1px solid var(--border-glow);
         }
 
-        .main-content h1 {
-            font-size: 2.5rem;
-            font-weight: 800;
-            background: linear-gradient(to right, #fff, var(--secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        .panel-header {
+            font-family: 'Syncopate', sans-serif;
+            font-size: 0.8rem;
+            margin-bottom: 40px;
+            color: var(--primary-neon);
+            border-bottom: 1px solid var(--border-glow);
+            padding-bottom: 10px;
         }
 
-        .input-box {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 30px;
-        }
-        input {
-            flex: 1;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid var(--glass-border);
-            padding: 18px 25px;
-            border-radius: 15px;
-            color: #fff;
-            font-size: 1rem;
-            outline: none;
-        }
-        .add-btn {
-            background: linear-gradient(45deg, var(--primary), var(--secondary));
-            border: none;
-            padding: 0 30px;
-            border-radius: 15px;
-            color: #fff;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.4s;
-        }
-        .add-btn:hover {
-            box-shadow: 0 0 20px var(--primary);
-            transform: scale(1.05);
-        }
-
-        /* Vazifalar ro'yxati */
-        .task-card {
+        .stat-card {
             background: rgba(255,255,255,0.03);
-            margin-bottom: 15px;
+            border: 1px solid var(--border-glow);
+            border-radius: 15px;
             padding: 20px;
-            border-radius: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-left: 4px solid var(--primary);
-            transition: 0.3s;
-        }
-        .task-card.done {
-            border-left-color: var(--success);
-            opacity: 0.7;
-        }
-        .task-info {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-        .check-circle {
-            width: 25px; height: 25px;
-            border: 2px solid var(--primary);
-            border-radius: 50%;
-            cursor: pointer;
-            display: grid;
-            place-items: center;
-        }
-        .done .check-circle {
-            background: var(--success);
-            border-color: var(--success);
-        }
-
-        /* Arxiv qismi uchun maxsus dizayn */
-        .archive-mode .task-card {
-            border-left-color: #555;
-            cursor: not-allowed;
-            pointer-events: none; /* Hech narsani o'zgartirib bo'lmaydi */
-        }
-        .archive-tag {
-            font-size: 0.7rem;
-            background: rgba(255,255,255,0.1);
-            padding: 4px 10px;
-            border-radius: 5px;
-            color: var(--text-dim);
-        }
-
-        /* Sidebar Stats */
-        .stat-box {
-            text-align: center;
             margin-bottom: 20px;
+            transition: var(--transition-smooth);
         }
-        .stat-value {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 2.5rem;
-            color: var(--primary);
+
+        .stat-card:hover {
+            background: rgba(0, 242, 255, 0.05);
+            border-color: var(--primary-neon);
+        }
+
+        /* Main Display Area */
+        .display-area {
+            background: rgba(0,0,0,0.4);
+            padding: 40px;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .view-section {
+            display: none;
+            animation: slideUp 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .view-section.active {
             display: block;
         }
-        .stat-label {
-            color: var(--text-dim);
-            text-transform: uppercase;
-            font-size: 0.8rem;
-            letter-spacing: 1px;
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Responsive */
-        @media (max-width: 1100px) {
-            .container { grid-template-columns: 1fr; }
-            .sidebar { display: none; }
+        /* Neural Matrix (Tasks) Styles */
+        .task-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
         }
+
+        .cyber-card {
+            background: var(--surface);
+            border: 1px solid var(--border-glow);
+            border-radius: 20px;
+            padding: 25px;
+            position: relative;
+            overflow: hidden;
+            transition: var(--transition-smooth);
+        }
+
+        .cyber-card::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; width: 4px; height: 100%;
+            background: var(--primary-neon);
+        }
+
+        .cyber-card.high-priority::before { background: var(--danger); }
+        .cyber-card.completed::before { background: var(--success); opacity: 0.5; }
+
+        .card-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        /* Input Cyber System */
+        .input-wrapper {
+            background: rgba(255,255,255,0.05);
+            border-radius: 15px;
+            padding: 5px;
+            display: flex;
+            border: 1px solid var(--border-glow);
+            margin-bottom: 40px;
+            box-shadow: 0 0 30px rgba(0, 242, 255, 0.1);
+        }
+
+        .input-wrapper input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: #fff;
+            padding: 15px 25px;
+            font-size: 1.1rem;
+            outline: none;
+        }
+
+        .cyber-btn {
+            background: var(--primary-neon);
+            color: #000;
+            border: none;
+            padding: 0 30px;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: var(--transition-smooth);
+        }
+
+        .cyber-btn:hover {
+            box-shadow: 0 0 30px var(--primary-neon);
+            letter-spacing: 3px;
+        }
+
+        /* ARCHIVE SYSTEM (The Immutable Vault) */
+        .vault-item {
+            background: rgba(0,0,0,0.6);
+            border: 1px solid #333;
+            padding: 15px 25px;
+            margin-bottom: 10px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            opacity: 0.8;
+            filter: grayscale(0.5);
+            cursor: not-allowed;
+        }
+
+        .vault-tag {
+            font-size: 0.7rem;
+            color: var(--accent-gold);
+            text-transform: uppercase;
+            border: 1px solid var(--accent-gold);
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+
+        /* Analytics Styles */
+        .chart-container {
+            height: 400px;
+            background: var(--surface);
+            border-radius: 25px;
+            padding: 30px;
+            margin-top: 30px;
+        }
+
+        /* Custom UI Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-thumb { background: var(--primary-neon); border-radius: 10px; }
     </style>
 </head>
 <body>
 
-    <div class="bg-blobs">
-        <div class="blob" style="width: 400px; height: 400px; left: -100px; top: -100px;"></div>
-        <div class="blob" style="width: 300px; height: 300px; right: -50px; bottom: -50px; background: var(--accent);"></div>
+    <div id="loader">
+        <div class="loader-text">ASTRA OS</div>
+        <p style="color: #555; margin-top: 20px;">Initializing Core Modules...</p>
     </div>
 
-    <div class="container">
-        <aside class="sidebar glass">
-            <h2>PRO DASHBOARD</h2>
-            <div class="nav-item active" onclick="switchTab('daily')">
-                <i class="fas fa-calendar-day"></i>
-                <span>Kunlik Rejalar</span>
-            </div>
-            <div class="nav-item" onclick="switchTab('archive')">
-                <i class="fas fa-archive"></i>
-                <span>Arxiv (O'zgarmas)</span>
-            </div>
-            <div class="nav-item">
-                <i class="fas fa-chart-line"></i>
-                <span>Statistika</span>
-            </div>
-            <div class="nav-item">
-                <i class="fas fa-cog"></i>
-                <span>Sozlamalar</span>
-            </div>
+    <div class="app-shell">
+        <nav class="nav-rail">
+            <div class="nav-icon active" onclick="app.switchView('dashboard')" title="Dashboard"><i class="fas fa-th-large"></i></div>
+            <div class="nav-icon" onclick="app.switchView('matrix')" title="Neural Matrix"><i class="fas fa-brain"></i></div>
+            <div class="nav-icon" onclick="app.switchView('archive')" title="Deep Archive"><i class="fas fa-database"></i></div>
+            <div class="nav-icon" onclick="app.switchView('analytics')" title="Growth Stats"><i class="fas fa-project-diagram"></i></div>
+            <div style="margin-top: auto;" class="nav-icon"><i class="fas fa-power-off" style="color: var(--danger);"></i></div>
+        </nav>
+
+        <aside class="control-panel">
+            <div class="panel-header">System.Status</div>
             
-            <div style="margin-top: 50px;">
-                <p class="stat-label">Haftalik Progress</p>
-                <div style="width: 100%; height: 8px; background: #222; border-radius: 10px; margin-top: 10px;">
-                    <div id="weeklyProgress" style="width: 65%; height: 100%; background: var(--primary); border-radius: 10px; box-shadow: 0 0 10px var(--primary);"></div>
+            <div class="stat-card">
+                <small style="color: var(--primary-neon);">CURRENT_EFFICIENCY</small>
+                <h2 id="efficiency-val">0%</h2>
+                <div style="width: 100%; height: 4px; background: #222; margin-top: 10px;">
+                    <div id="eff-bar" style="width: 0%; height: 100%; background: var(--primary-neon);"></div>
                 </div>
+            </div>
+
+            <div class="stat-card">
+                <small style="color: var(--accent-gold);">ACTIVE_PROCESSES</small>
+                <h2 id="process-count">0 Units</h2>
+            </div>
+
+            <div class="stat-card" style="margin-top: auto;">
+                <p id="digital-clock" style="font-family: 'Syncopate'; font-size: 1.4rem;">00:00:00</p>
+                <p id="current-date" style="font-size: 0.8rem; opacity: 0.5;">7 April 2026</p>
             </div>
         </aside>
 
-        <main class="main-content">
-            <header>
-                <div>
-                    <p id="currentDay">Seshanba</p>
-                    <h1 id="titleText">Daily Planner</h1>
+        <main class="display-area">
+            
+            <section id="dashboard" class="view-section active">
+                <h1 style="font-family: 'Syncopate'; font-size: 3rem; margin-bottom: 10px;">Welcome, ELBEK.</h1>
+                <p style="opacity: 0.6; margin-bottom: 50px;">Astra Neural Engine tayyor. Bugun qanday cho'qqilarni zabt etamiz?</p>
+                
+                <div class="input-wrapper">
+                    <input type="text" id="task-input-main" placeholder="Tizimga yangi buyruq (vazifa) kiriting...">
+                    <button class="cyber-btn" onclick="app.createTask()">Inject</button>
                 </div>
-                <div class="glass" style="padding: 10px 20px; border-radius: 15px;">
-                    <span id="digitalClock" style="font-family: 'Orbitron'; font-weight: bold;">09:41</span>
-                </div>
-            </header>
 
-            <div id="inputSection">
-                <div class="input-box">
-                    <input type="text" id="mainInput" placeholder="Nima rejangiz bor?">
-                    <button class="add-btn" onclick="addNewTask()">ADD TASK</button>
-                </div>
-            </div>
+                <h3 style="margin-bottom: 20px; letter-spacing: 2px;">VITAL_TASKS_STREAM</h3>
+                <div class="task-grid" id="dashboard-tasks">
+                    </div>
+            </section>
 
-            <div id="taskList">
+            <section id="matrix" class="view-section">
+                <h2 style="font-family: 'Syncopate'; margin-bottom: 30px;">Neural Matrix v.1</h2>
+                <div class="task-grid" id="matrix-tasks-full"></div>
+            </section>
+
+            <section id="archive" class="view-section">
+                <h2 style="font-family: 'Syncopate'; margin-bottom: 30px; color: var(--accent-gold);">DEEP_ARCHIVE_LOGS</h2>
+                <div id="archive-list">
+                    </div>
+            </section>
+
+            <section id="analytics" class="view-section">
+                <h2 style="font-family: 'Syncopate'; margin-bottom: 30px;">NEURAL_GROWTH_ANALYTICS</h2>
+                <div class="chart-container">
+                    <canvas id="growthChart"></canvas>
                 </div>
+            </section>
+
         </main>
-
-        <aside class="right-sidebar">
-            <div class="glass" style="margin-bottom: 25px;">
-                <div class="stat-box">
-                    <span class="stat-label">Bajarilgan</span>
-                    <span class="stat-value" id="doneCount">0</span>
-                </div>
-                <hr style="border: 0; border-top: 1px solid var(--glass-border); margin: 20px 0;">
-                <div class="stat-box">
-                    <span class="stat-label">Umumiy samaradorlik</span>
-                    <span class="stat-value" id="effPercent">0%</span>
-                </div>
-            </div>
-
-            <div class="glass">
-                <h3 style="font-size: 0.9rem; margin-bottom: 15px;">KUNLIK MOTIVATSIYA</h3>
-                <p id="quoteBox" style="font-size: 0.85rem; color: var(--text-dim); line-height: 1.6;">
-                    "Sizning bugungi mehnatingiz ertangi hayotingiz poydevoridir."
-                </p>
-            </div>
-        </aside>
     </div>
 
     <script>
-        /* CORE JAVASCRIPT LOGIC 
-           Barcha funksiyalar va ma'lumotlar boshqaruvi.
-        */
+        /**
+         * ASTRA ENGINE CORE v4.0.5
+         * Ushbu qism tizimning butun mantig'ini boshqaradi.
+         */
+        const app = {
+            // GLOBAL STATE
+            state: {
+                tasks: JSON.parse(localStorage.getItem('ASTRA_TASKS')) || [],
+                archive: JSON.parse(localStorage.getItem('ASTRA_ARCHIVE')) || [],
+                sessionStart: new Date()
+            },
 
-        let state = {
-            view: 'daily', // daily yoki archive
-            dailyTasks: JSON.parse(localStorage.getItem('dailyTasks')) || [],
-            archivedTasks: JSON.parse(localStorage.getItem('archivedTasks')) || []
-        };
+            // INITIALIZER
+            init() {
+                setTimeout(() => {
+                    document.getElementById('loader').style.opacity = '0';
+                    setTimeout(() => document.getElementById('loader').remove(), 1000);
+                }, 2500);
 
-        // SAQLASH
-        function syncStorage() {
-            localStorage.setItem('dailyTasks', JSON.stringify(state.dailyTasks));
-            localStorage.setItem('archivedTasks', JSON.stringify(state.archivedTasks));
-            updateStats();
-        }
+                this.renderAll();
+                this.updateClock();
+                this.initChart();
+                setInterval(() => this.updateClock(), 1000);
+            },
 
-        // YANGI VAZIFA
-        function addNewTask() {
-            const input = document.getElementById('mainInput');
-            if (input.value.trim() === "") return;
+            // VIEW CONTROLLER
+            switchView(viewId) {
+                document.querySelectorAll('.view-section').forEach(v => v.classList.remove('active'));
+                document.querySelectorAll('.nav-icon').forEach(n => n.classList.remove('active'));
+                
+                document.getElementById(viewId).classList.add('active');
+                event.currentTarget.classList.add('active');
+            },
 
-            const task = {
-                id: Date.now(),
-                text: input.value,
-                completed: false,
-                time: new Date().toLocaleTimeString().slice(0, 5),
-                date: new Date().toLocaleDateString()
-            };
+            // TASK CORE FUNCTIONS
+            createTask() {
+                const input = document.getElementById('task-input-main');
+                if(!input.value.trim()) return;
 
-            state.dailyTasks.unshift(task);
-            input.value = "";
-            render();
-            syncStorage();
-        }
+                const newTask = {
+                    uuid: 'ASTR-' + Math.random().toString(36).substr(2, 9).toUpperCase(),
+                    body: input.value,
+                    priority: Math.random() > 0.7 ? 'HIGH' : 'NORMAL',
+                    status: 'ACTIVE',
+                    created: new Date().toISOString()
+                };
 
-        // BAJARILDI DEB BELGILASH VA ARXIVGA YUBORISH
-        function toggleTask(id) {
-            state.dailyTasks = state.dailyTasks.map(t => {
-                if (t.id === id) {
-                    t.completed = !t.completed;
-                    // Agar bajarilgan bo'lsa, 1 soniyadan keyin arxivga o'tkazish
-                    if(t.completed) {
-                        setTimeout(() => moveToArchive(id), 1000);
-                    }
+                this.state.tasks.unshift(newTask);
+                input.value = '';
+                this.sync();
+                this.renderAll();
+            },
+
+            completeTask(uuid) {
+                const index = this.state.tasks.findIndex(t => t.uuid === uuid);
+                if(index > -1) {
+                    const task = this.state.tasks.splice(index, 1)[0];
+                    task.status = 'COMPLETED';
+                    task.finalized = new Date().toISOString();
+                    
+                    // O'zgarmas arxivga yuborish
+                    this.state.archive.unshift(task);
+                    
+                    this.sync();
+                    this.renderAll();
                 }
-                return t;
-            });
-            render();
-            syncStorage();
-        }
+            },
 
-        function moveToArchive(id) {
-            const taskIndex = state.dailyTasks.findIndex(t => t.id === id);
-            if(taskIndex > -1) {
-                const task = state.dailyTasks.splice(taskIndex, 1)[0];
-                task.archivedAt = new Date().toLocaleDateString();
-                state.archivedTasks.unshift(task);
-                render();
-                syncStorage();
-            }
-        }
+            // RENDER ENGINE
+            renderAll() {
+                const dashList = document.getElementById('dashboard-tasks');
+                const archList = document.getElementById('archive-list');
+                
+                dashList.innerHTML = '';
+                archList.innerHTML = '';
 
-        // TABLARNI ALMASHTIRISH
-        function switchTab(tab) {
-            state.view = tab;
-            
-            // UI Update
-            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-            event.currentTarget.classList.add('active');
-            
-            const inputSection = document.getElementById('inputSection');
-            const title = document.getElementById('titleText');
-
-            if(tab === 'archive') {
-                inputSection.style.display = 'none';
-                title.innerText = "Archive (View Only)";
-                document.getElementById('taskList').classList.add('archive-mode');
-            } else {
-                inputSection.style.display = 'flex';
-                title.innerText = "Daily Planner";
-                document.getElementById('taskList').classList.remove('archive-mode');
-            }
-            render();
-        }
-
-        // RENDER QILISH
-        function render() {
-            const list = document.getElementById('taskList');
-            list.innerHTML = "";
-            
-            const tasksToDisplay = state.view === 'daily' ? state.dailyTasks : state.archivedTasks;
-
-            if(tasksToDisplay.length === 0) {
-                list.innerHTML = `<p style="text-align: center; color: var(--text-dim); margin-top: 50px;">Hech narsa topilmadi...</p>`;
-                return;
-            }
-
-            tasksToDisplay.forEach(task => {
-                const card = document.createElement('div');
-                card.className = `task-card ${task.completed ? 'done' : ''}`;
-                card.innerHTML = `
-                    <div class="task-info">
-                        <div class="check-circle" onclick="toggleTask(${task.id})">
-                            ${task.completed ? '<i class="fas fa-check"></i>' : ''}
+                // Render Dashboard Active Tasks
+                this.state.tasks.forEach(task => {
+                    const card = document.createElement('div');
+                    card.className = `cyber-card ${task.priority === 'HIGH' ? 'high-priority' : ''}`;
+                    card.innerHTML = `
+                        <small style="color: var(--primary-neon);">${task.uuid}</small>
+                        <h3 style="margin: 10px 0;">${task.body}</h3>
+                        <div class="card-actions">
+                            <button onclick="app.completeTask('${task.uuid}')" class="cyber-btn" style="padding: 5px 15px; font-size: 0.7rem;">Resolve</button>
                         </div>
+                    `;
+                    dashList.appendChild(card);
+                });
+
+                // Render Deep Archive (READ-ONLY)
+                this.state.archive.forEach(log => {
+                    const item = document.createElement('div');
+                    item.className = 'vault-item';
+                    item.innerHTML = `
                         <div>
-                            <p style="font-weight: 600;">${task.text}</p>
-                            <span style="font-size: 0.7rem; color: var(--text-dim);">
-                                <i class="far fa-clock"></i> ${task.time} 
-                                ${state.view === 'archive' ? `<span class="archive-tag">Arxivlandi: ${task.archivedAt}</span>` : ''}
-                            </span>
+                            <span class="vault-tag">Encrypted_Log</span>
+                            <span style="margin-left: 15px;">${log.body}</span>
                         </div>
-                    </div>
-                    ${state.view === 'daily' ? `
-                        <i class="fas fa-trash" style="color: #ff4757; cursor: pointer;" onclick="deleteTask(${task.id})"></i>
-                    ` : '<i class="fas fa-lock" title="Arxivlangan, o\'zgartirib bo\'lmaydi"></i>'}
-                `;
-                list.appendChild(card);
-            });
-        }
+                        <div style="font-size: 0.7rem; opacity: 0.5;">RESOLVED: ${new Date(log.finalized).toLocaleDateString()}</div>
+                    `;
+                    archList.appendChild(item);
+                });
 
-        function deleteTask(id) {
-            state.dailyTasks = state.dailyTasks.filter(t => t.id !== id);
-            render();
-            syncStorage();
-        }
+                // Update Stats
+                const eff = this.state.archive.length > 0 ? 
+                    Math.min(100, Math.round((this.state.archive.length / (this.state.tasks.length + this.state.archive.length)) * 100)) : 0;
+                
+                document.getElementById('efficiency-val').innerText = eff + '%';
+                document.getElementById('eff-bar').style.width = eff + '%';
+                document.getElementById('process-count').innerText = this.state.tasks.length + ' Units';
+            },
 
-        function updateStats() {
-            const done = state.archivedTasks.length;
-            const daily = state.dailyTasks.length;
-            const total = done + daily;
-            
-            document.getElementById('doneCount').innerText = done;
-            const percent = total === 0 ? 0 : Math.round((done / total) * 100);
-            document.getElementById('effPercent').innerText = percent + "%";
-            document.getElementById('weeklyProgress').style.width = percent + "%";
-        }
+            // DATA KERNEL
+            sync() {
+                localStorage.setItem('ASTRA_TASKS', JSON.stringify(this.state.tasks));
+                localStorage.setItem('ASTRA_ARCHIVE', JSON.stringify(this.state.state.archive));
+            },
 
-        // VAQT VA SOAT
-        setInterval(() => {
-            const now = new Date();
-            document.getElementById('digitalClock').innerText = now.toLocaleTimeString().slice(0, 5);
-        }, 1000);
+            updateClock() {
+                const now = new Date();
+                document.getElementById('digital-clock').innerText = now.toLocaleTimeString('uz-UZ', {hour12: false});
+            },
 
-        // INITIALIZE
-        window.onload = () => {
-            const days = ["Yakshanba", "Dushanba", "Seshanba", "Chorshanba", "Payshanba", "Juma", "Shanba"];
-            document.getElementById('currentDay').innerText = days[new Date().getDay()];
-            render();
-            updateStats();
+            // ANALYTICS MODULE
+            initChart() {
+                const ctx = document.getElementById('growthChart').getContext('2d');
+                new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: ['Dushanba', 'Seshanba', 'Chorshanba', 'Payshanba', 'Juma', 'Shanba', 'Yakshanba'],
+                        datasets: [{
+                            label: 'Neural Productivity Index',
+                            data: [65, 78, 90, 85, 99, 110, 120],
+                            borderColor: '#00f2ff',
+                            tension: 0.4,
+                            fill: true,
+                            backgroundColor: 'rgba(0, 242, 255, 0.1)'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { display: false } },
+                        scales: {
+                            y: { grid: { color: '#222' } },
+                            x: { grid: { color: '#222' } }
+                        }
+                    }
+                });
+            }
         };
+
+        // Boot system
+        window.onload = () => app.init();
     </script>
 </body>
     </html>
